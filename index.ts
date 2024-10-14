@@ -12,16 +12,19 @@ const KINTO_INFLATOR_ID = 1n;
 
 const main = async () => {
 	const pk = process.env.PRIVATE_KEY;
+	const rpc = process.env.RPC_URL;
 
 	if (!pk) {
-		throw new Error("PRIVATE_KEY not set");
+		throw new Error("env var PRIVATE_KEY not set");
+	}
+
+	if (!rpc) {
+		throw new Error("env var RPC_URL not set");
 	}
 
 	const walletClient = createWalletClient({
 		chain: kinto,
-		transport: http(
-			"https://kinto-mainnet.calderachain.xyz/infra-partner-http",
-		),
+		transport: http(rpc),
 		account: privateKeyToAccount(pk as Hex),
 	});
 
